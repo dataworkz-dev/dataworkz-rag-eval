@@ -21,7 +21,6 @@ class GroqOpenAI(LLMInterface):
         endpoint="https://api.groq.com/openai/v1",
         model="llama-3.3-70b-versatile"
     )
-    print(llm.run({"system_prompt": "You are a helpful assistant.","user_prompt": "What is the capital of France?"}))
     ```
 
     To register a new provider, use the following:
@@ -34,8 +33,7 @@ class GroqOpenAI(LLMInterface):
             endpoint="https://api.groq.com/openai/v1"
         ),
     )
-    llm = LLMFactory.get("groq_openai:llama3-8b-8192")
-    print(llm.run({"system_prompt": "You are a helpful assistant.", "user_prompt": "What is the capital of France?"}))
+    llm = LLMFactory.get("groq_openai:llama3-8b-8192"
     ```
     """
 

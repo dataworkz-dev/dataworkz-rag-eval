@@ -1,4 +1,5 @@
 import time
+import os
 from .dataworkz_api import DataworkzAPI
 from continuous_eval.metrics.retrieval import (
     PrecisionRecallF1,
@@ -10,14 +11,68 @@ from continuous_eval.metrics.generation.text import (
     DeterministicFaithfulness,
     DebertaAnswerScores,
     BertAnswerSimilarity,
-    BertAnswerRelevance
+    BertAnswerRelevance,
 )
 
+# TODO: Add support for other providers of LLMs, like groq
 import logging
+
 logger = logging.getLogger()
 
 
 class AIDtwz:
+    """
+    A client to interact with Dataworkz's Q&A systems API.
+
+    Attributes:
+        dtwz_client (DataworkzAPI): Instance of DataworkzAPI for making requests.
+        system_id (str): ID of the current system being used.
+        llm_provider_id (str): ID of the LLM provider in use.
+        answer (str): The most recent answer retrieved.
+        context (str): The most recent context retrieved.
+        response (dict): The most recent response from a request to the Dataworkz API.
+        llm_eval (bool): Whether to evaluate using LLM-based methods or not.
+        retries (int): Number of times left to retry before failing. Default is 15.
+        retry (bool): Whether to continue retrying after failure. Default is True.
+
+    Methods:
+        __init__(self, llm_eval=False)
+            Initializes the DTWZClient with a DataworkzAPI instance and optionally whether to evaluate using LLM-based methods.
+
+        find_key_by_value(self, json_obj, target_value, current_path="")
+            Recursively searches for the full path of the key in a nested JSON object where the value matches the target_value.
+
+        set_system_id(self, system_id: str)
+            Sets the ID of the Q&A system to be used.
+
+        set_llm_provider_id(self, llm_provider_id: str)
+            Sets the ID of the LLM provider to be used.
+
+        get_qna_systems(self)
+            Fetches a list of available Q&A systems from Dataworkz.
+
+        get_qna_system_details(self)
+            Fetches details about the current Q&A system being used from Dataworkz.
+
+        get_llm_provider_details(self)
+            Fetches details about the current LLM provider from Dataworkz.
+
+        get_chunks(self, query: str)
+            Gets chunks of text relevant to a given query from Dataworkz.
+
+        get_answer(self)
+            Returns the most recent answer retrieved by get_chunks method.
+
+        get_search(self, query: str)
+            Performs a search on Dataworkz's Q&A system using the given query.
+
+        async score_retrieval(self, query: str, gt_answer: str, chunks: list[dict])
+            Computes retrieval-based metrics for the retrieved context.
+
+        score_system(self, query: str, gt_answer: str)
+            Computes various system-based metrics such as answer correctness, faithfulness etc., for the most recent query and ground truth answer.
+    """
+
     dtwz_client: DataworkzAPI
     system_id: str
     llm_provider_id: str
@@ -87,20 +142,20 @@ class AIDtwz:
             )
             if self.response is not None:
                 self.answer = self.response["answer"]
-                self.context = self.response['context']
+                self.context = self.response["context"]
                 return self.find_key_by_value(
                     self.response["probe"], "MERGE_NEIGHBOURING_CONTEXT"
                 )
             if self.retries == 0:
-                logger.error(f'Failed to get a response after 10 attempts.')
+                logger.error(f"Failed to get a response after 10 attempts.")
                 return None
             logger.debug("Retrying...")
             time.sleep(10)
             self.retries -= 1
-    
+
     def get_answer(self):
         return self.answer
-    
+
     def get_search(self, query: str):
         self.response = self.dtwz_client.get_search(self.system_id, query)
         return self.response
@@ -148,10 +203,7 @@ class AIDtwz:
         score |= deberta_metric(**datum)
         bert_similarity_metrics = BertAnswerSimilarity()
         score |= bert_similarity_metrics(**datum)
-        datum = {
-            "question": query,
-            "answer": self.answer
-        }
+        datum = {"question": query, "answer": self.answer}
         bert_relevance_metrics = BertAnswerRelevance()
         score |= bert_relevance_metrics(**datum)
         return score

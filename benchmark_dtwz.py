@@ -24,7 +24,7 @@ logger.setLevel(logging.DEBUG)
 
 benchmark_name_to_qna: dict[str, str] = {
     "privacy_qa": [
-        # {"expt_name": "privacy_qna_rerank", "uuid": "04809ddf-e395-4384-97f2-a80cfb1e2813"},
+        {"expt_name": "privacy_qna_rerank", "uuid": "04809ddf-e395-4384-97f2-a80cfb1e2813"},
         {
             "expt_name": "privacy_qna_rerank",
             "uuid": "be0c53c8-33fe-4da9-ad6e-897d2f9c5fc1",
@@ -59,8 +59,8 @@ ANSWER_METRICS = False
 
 async def main() -> None:
     qa_data = pd.read_csv("./data/legalbench_qa_data.csv")
-    qa_data = qa_data.head(2)
-    dtwz_ai_client = AIDtwz()
+    qa_data = qa_data.head(1)
+    dtwz_ai_client = AIDtwz(True)
     dtwz_ai_client.set_llm_provider_id("599fc5b5-551b-452e-825b-970d2cfe68fe")
     results = []
     for row in qa_data.itertuples():
