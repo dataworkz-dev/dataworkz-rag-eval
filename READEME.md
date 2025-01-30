@@ -1,0 +1,28 @@
+# README
+
+This is a simple code repository that includes two Python scripts for running benchmarks on different machine learning models. The aim of this project is to provide a comparison between different classification algorithms, specifically Random Forest and XGBoost.
+
+## Files
+
+1. `benchmark_*.py`: These scripts contain the main function which runs the benchmarking process. It imports necessary functions from other modules, applies them on data, evaluates performance of RAG pipelines, and outputs results in a table format into `benchmark_results` folder.
+2. `dtwz_ai.py`: Contains pipeline eevaluation functions  for evaluating any given pipeline, and `dataworkz_api.py` provides the wrappers around the Dataworz API.
+3. `requirements.txt`: Contains a list of Python dependencies required for running these scripts.
+4. `data/` directory: Contains the dataset used in this project. The data should be placed here and accessed by providing the relative path to it from benchmarking.py. 
+5. `README.md`: This file you are reading right now. It provides an overview of the repository and its content.
+6. `LICENSE`: Contains information about the software's licensing terms.
+
+## How to Run
+
+1. Install Python dependencies using pip: 
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Place your data in the "data/" directory as instructed above. Make sure that the paths in benchamark_*.py correspond to your actual data location. and the data is in the format as specified by the headers, `["question", "gt_answer", "gt-context", "source"]`. The source is used in the benchmarking script to iterate over the alternative pipelines.
+3. Run `benchmark_*.py` script:
+    ```bash
+    python benchmark_*.py
+    ```
+4. The results will be stored in the `benchmark_results` folder along with the timestamp of the run. 
+
+
+Please note that running these scripts require a working Python environment along with necessary libraries installed (as specified in requirements.txt). Also, the data paths and other configurations are assumed based on the current file structure and might need adjustments depending on your specific setup.
