@@ -5,6 +5,7 @@ from continuous_eval.llms.base import LLMInterface, LLMInterfaceFactory
 
 try:
     from openai import OpenAI as _OpenAI
+
     GROQ_OPENAI_AVAILABLE = True
 except ImportError:
     GROQ_OPENAI_AVAILABLE = False
@@ -67,7 +68,7 @@ class GroqOpenAI(LLMInterface):
             "top_p": 1,
             "frequency_penalty": 0,
             "presence_penalty": 0,
-            "model": model or "llama-3.3-70b-versatile"
+            "model": model or "llama-3.3-70b-versatile",
         }
         self.defaults.update(kwargs)
 
@@ -92,7 +93,7 @@ class GroqOpenAIFactory(LLMInterfaceFactory):
         **kwargs,
     ):
         self.api_key = api_key or os.getenv("GROQ_API_KEY")
-        self.endpoint = endpoint 
+        self.endpoint = endpoint
         self.extra_kwargs = kwargs
 
     def __call__(self, model, **kwargs):

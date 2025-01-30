@@ -24,21 +24,27 @@ logger.setLevel(logging.DEBUG)
 
 benchmark_name_to_qna: dict[str, str] = {
     "privacy_qa": [
-        {"expt_name": "privacy_qna_rerank", "uuid": "04809ddf-e395-4384-97f2-a80cfb1e2813"},
+        {
+            "expt_name": "privacy_qna_rerank",
+            "uuid": "04809ddf-e395-4384-97f2-a80cfb1e2813",
+        },
         {
             "expt_name": "privacy_qna_rerank",
             "uuid": "be0c53c8-33fe-4da9-ad6e-897d2f9c5fc1",
         },
     ],
     "contractnli": [
-        # { "expt_name": "contractnli_qna_v1","uuid": "bafd8ef9-f535-489a-9d37-1940f5a12b10",},
+        {
+            "expt_name": "contractnli_qna_v1",
+            "uuid": "bafd8ef9-f535-489a-9d37-1940f5a12b10",
+        },
         {
             "expt_name": "contractnli_qna_rerank",
             "uuid": "87c1eb00-fe80-4012-b8b8-82afd3181d12",
         },
     ],
     "maud": [
-        # {"expt_name": "maud_qna_v1", "uuid": "04d1b00f-1739-486b-a3eb-a3fcb4c07e2a"},
+        {"expt_name": "maud_qna_v1", "uuid": "04d1b00f-1739-486b-a3eb-a3fcb4c07e2a"},
         {
             "expt_name": "maud_qna_rerank",
             "uuid": "fc0f4993-b461-4b26-b1fb-ce26ce55ef57",
@@ -49,7 +55,7 @@ benchmark_name_to_qna: dict[str, str] = {
             "expt_name": "cuad_qna_rerank",
             "uuid": "8a7bed94-bb5c-42bf-8244-eaec6cdeaed4",
         },
-        # {"expt_name": "cuad_qna_v2", "uuid": "c8710d96-ec61-43a1-aa40-666f4d579afc"},
+        {"expt_name": "cuad_qna_v2", "uuid": "c8710d96-ec61-43a1-aa40-666f4d579afc"},
     ],
 }
 
