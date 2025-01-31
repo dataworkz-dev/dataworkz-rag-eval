@@ -19,6 +19,10 @@ import logging
 
 logger = logging.getLogger()
 
+# disable BERT metrics because hugging face takes too long for responses
+# also disable additional metrics like Rouge and Bleu
+ADDITIONAL_METRICS = False
+
 
 class AIDtwz:
     """
@@ -195,15 +199,16 @@ class AIDtwz:
             "ground_truth_context": gt_answer,
             "retrieved_context": retrieved_context,
         }
-        correctness_metric = DeterministicAnswerCorrectness()
-        score = correctness_metric(**datum)
-        faithfulness_metric = DeterministicFaithfulness()
-        score |= faithfulness_metric(**datum)
         deberta_metric = DebertaAnswerScores()
-        score |= deberta_metric(**datum)
-        bert_similarity_metrics = BertAnswerSimilarity()
-        score |= bert_similarity_metrics(**datum)
-        datum = {"question": query, "answer": self.answer}
-        bert_relevance_metrics = BertAnswerRelevance()
-        score |= bert_relevance_metrics(**datum)
+        score = deberta_metric(**datum)
+        if ADDITIONAL_METRICS:
+            correctness_metric = DeterministicAnswerCorrectness()
+            score |= correctness_metric(**datum)
+            faithfulness_metric = DeterministicFaithfulness()
+            score |= faithfulness_metric(**datum)
+            bert_similarity_metrics = BertAnswerSimilarity()
+            score |= bert_similarity_metrics(**datum)
+            datum = {"question": query, "answer": self.answer}
+            bert_relevance_metrics = BertAnswerRelevance()
+            score |= bert_relevance_metrics(**datum)
         return score

@@ -18,7 +18,7 @@ class GroqOpenAI(LLMInterface):
     Example:
     ```
     llm = GroqOpenAI(
-        api_key="1234567890123",
+        api_key="<ENTER GROQ API KEY>",
         endpoint="https://api.groq.com/openai/v1",
         model="llama-3.3-70b-versatile"
     )
@@ -30,7 +30,7 @@ class GroqOpenAI(LLMInterface):
         "groq_openai",
         model="llama3-8b-8192",
         provider_class=GroqOpenAIFactory(
-            api_key="1234567890123",
+            api_key="<ENTER GROQ API KEY>",
             endpoint="https://api.groq.com/openai/v1"
         ),
     )
