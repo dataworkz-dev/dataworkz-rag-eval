@@ -9,7 +9,6 @@ This is a simple code repository that includes two Python scripts for running be
 3. `requirements.txt`: Contains a list of Python dependencies required for running these scripts.
 4. `data/` directory: Contains the dataset used in this project. The data should be placed here and accessed by providing the relative path to it from benchmarking.py. 
 5. `README.md`: This file you are reading right now. It provides an overview of the repository and its content.
-6. `LICENSE`: Contains information about the software's licensing terms.
 
 ## How to Run
 
