@@ -19,10 +19,6 @@ import logging
 
 logger = logging.getLogger()
 
-# disable BERT metrics because hugging face takes too long for responses
-# also disable additional metrics like Rouge and Bleu
-ADDITIONAL_METRICS = False
-
 
 class AIDtwz:
     """
@@ -83,13 +79,15 @@ class AIDtwz:
     answer: str
     context: str
     response: dict
-    llm_eval: bool
+    answer_metrics: bool
+    additional_metrics: bool
     retries: int = 15
     retry: bool = True
 
-    def __init__(self, llm_eval=False):
+    def __init__(self, answer_metrics=False, additional_metrics=False):
         self.dtwz_client = DataworkzAPI()
-        self.llm_eval = llm_eval
+        self.answer_metrics = answer_metrics
+        self.additional_metrics = additional_metrics
         return
 
     def find_key_by_value(self, json_obj, target_value, current_path=""):
@@ -178,7 +176,7 @@ class AIDtwz:
         overall_metrics = (metrics(**datum)) | (ranked_metrics(**datum))
         # Adding context precision to the metrics computed via LLM based method.
         # Needs the OpenAI API key set as an environ variable
-        if self.llm_eval:
+        if self.answer_metrics:
             llm_context_precision = ContextPrecision()
             llm_context_precision_metrics = llm_context_precision(**datum)
             # Renaming LLM metrics to reflect they are from the LLM based method.
@@ -201,7 +199,7 @@ class AIDtwz:
         }
         deberta_metric = DebertaAnswerScores()
         score = deberta_metric(**datum)
-        if ADDITIONAL_METRICS:
+        if self.additional_metrics:
             correctness_metric = DeterministicAnswerCorrectness()
             score |= correctness_metric(**datum)
             faithfulness_metric = DeterministicFaithfulness()

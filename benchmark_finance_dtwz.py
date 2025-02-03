@@ -37,12 +37,14 @@ benchmark_name_to_qna: dict[str, str] = {
 
 # enable answer based deterministic metrics
 ANSWER_METRICS = True
+# disable BERT metrics because hugging face takes too long for responses
+# also disable additional metrics like Rouge and Bleu
 ADDITIONAL_METRICS = False
 
 
 async def main() -> None:
     qa_data = pd.read_csv("data/financebench_open_source.csv")
-    dtwz_ai_client = AIDtwz(True)
+    dtwz_ai_client = AIDtwz(ANSWER_METRICS, ADDITIONAL_METRICS)
     dtwz_ai_client.set_llm_provider_id("5224d4a2-09ae-48b3-8048-bff10e738eac")
     results = []
     for row in qa_data.itertuples():

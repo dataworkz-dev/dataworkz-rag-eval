@@ -26,3 +26,5 @@ This is a simple code repository that includes two Python scripts for running be
 
 
 Please note that running these scripts require a working Python environment along with necessary libraries installed (as specified in requirements.txt). Also, the data paths and other configurations are assumed based on the current file structure and might need adjustments depending on your specific setup.
+
+If running on a Mac with MPS enabled for pytorch, please set this variable to avoid any memory issues: ```PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0```

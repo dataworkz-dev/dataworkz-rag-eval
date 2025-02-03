@@ -61,12 +61,15 @@ benchmark_name_to_qna: dict[str, str] = {
 
 # enable answer based deterministic metrics
 ANSWER_METRICS = False
+# disable BERT metrics because hugging face takes too long for responses
+# also disable additional metrics like Rouge and Bleu
+ADDITIONAL_METRICS = False
 
 
 async def main() -> None:
     qa_data = pd.read_csv("./data/legalbench_qa_data.csv")
     qa_data = qa_data.head(1)
-    dtwz_ai_client = AIDtwz(True)
+    dtwz_ai_client = AIDtwz(ANSWER_METRICS, ADDITIONAL_METRICS)
     dtwz_ai_client.set_llm_provider_id("599fc5b5-551b-452e-825b-970d2cfe68fe")
     results = []
     for row in qa_data.itertuples():
