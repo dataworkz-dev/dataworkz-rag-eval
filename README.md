@@ -10,6 +10,13 @@ This is a simple code repository that includes two Python scripts for running be
 4. `data/` directory: Contains the dataset used in this project. The data should be placed here and accessed by providing the relative path to it from benchmarking.py. 
 5. `README.md`: This file you are reading right now. It provides an overview of the repository and its content.
 
+## How to get API keys and experimentation details 
+1. Use the following link to understand how to get the API keys - [Generate Dataworks API Key](https://docs.dataworkz.com/product-docs/api/generate-api-key-in-dataworkz)
+2. Once the API key is available, use the API key to get the QNA systems configured - [Get QNA systems](https://docs.dataworkz.com/product-docs/api#qna-v1-systems)
+3. Select the QNA system IDs for which you need to do the RAG Evaluation, and get the LLM Provider ID that you wish to use. [GET LLM Provider ID](https://docs.dataworkz.com/product-docs/api#qna-v1-systems-systemid-llm-providers)
+
+Use the above details to modify the benchmarking to script, to either compare two or more pipelines, or even evaluate a single QNA RAG pipeline. 
+
 ## How to Run
 
 1. Install Python dependencies using pip: 
