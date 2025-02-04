@@ -22,6 +22,7 @@ logger = logging.getLogger()
 # Setting the threshold of logger to DEBUG
 logger.setLevel(logging.DEBUG)
 
+# Set the UUID for the corresponding QNA App from Dataworkz
 benchmark_name_to_qna: dict[str, str] = {
     "finance_bench": [
         {
@@ -41,11 +42,14 @@ ANSWER_METRICS = True
 # also disable additional metrics like Rouge and Bleu
 ADDITIONAL_METRICS = False
 
+# Set the LLM Provider ID from Dataworkz 
+LLM_PROVIDER_ID = "5224d4a2-09ae-48b3-8048-bff10e738eac"
+
 
 async def main() -> None:
     qa_data = pd.read_csv("data/financebench_open_source.csv")
     dtwz_ai_client = AIDtwz(ANSWER_METRICS, ADDITIONAL_METRICS)
-    dtwz_ai_client.set_llm_provider_id("5224d4a2-09ae-48b3-8048-bff10e738eac")
+    dtwz_ai_client.set_llm_provider_id(LLM_PROVIDER_ID)
     results = []
     for row in qa_data.itertuples():
         print("Processing query No: ", getattr(row, 'Index'))

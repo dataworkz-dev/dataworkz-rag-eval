@@ -22,6 +22,7 @@ logger = logging.getLogger()
 # Setting the threshold of logger to DEBUG
 logger.setLevel(logging.DEBUG)
 
+# Set the UUID for the corresponding QNA App from Dataworkz
 benchmark_name_to_qna: dict[str, str] = {
     "privacy_qa": [
         {
@@ -65,12 +66,15 @@ ANSWER_METRICS = False
 # also disable additional metrics like Rouge and Bleu
 ADDITIONAL_METRICS = False
 
+# Set the LLM Provider ID from Dataworkz 
+LLM_PROVIDER_ID = "599fc5b5-551b-452e-825b-970d2cfe68fe"
+
 
 async def main() -> None:
     qa_data = pd.read_csv("./data/legalbench_qa_data.csv")
     qa_data = qa_data.head(1)
     dtwz_ai_client = AIDtwz(ANSWER_METRICS, ADDITIONAL_METRICS)
-    dtwz_ai_client.set_llm_provider_id("599fc5b5-551b-452e-825b-970d2cfe68fe")
+    dtwz_ai_client.set_llm_provider_id(LLM_PROVIDER_ID)
     results = []
     for row in qa_data.itertuples():
         question = row.question
