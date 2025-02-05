@@ -11,8 +11,12 @@ This is a simple code repository that includes two Python scripts for running be
 
 ## How to get API keys and experimentation details 
 1. Use the following link to understand how to get the API keys - [Generate Dataworkz API Key](https://docs.dataworkz.com/product-docs/api/generate-api-key-in-dataworkz)
-2. Once the API key is available, use the API key to get the QNA systems configured - [Get QNA systems](https://docs.dataworkz.com/product-docs/api#qna-v1-systems)
-3. Select the QNA system IDs for which you need to do the RAG Evaluation, and get the LLM Provider ID that you wish to use. [Get LLM Provider ID](https://docs.dataworkz.com/product-docs/api#qna-v1-systems-systemid-llm-providers)
+### Getting QNA system details 
+Once the API Key is available, use either of the methods below to get the QNA system details - 
+Run the `get_dtwz_detials.py` and follow the intructions on the screen, making note of the credentails that are needed for further steps. 
+### OR
+1. Once the API key is available, use the API key to get the QNA systems configured - [Get QNA systems](https://docs.dataworkz.com/product-docs/api#qna-v1-systems)
+2. Select the QNA system IDs for which you need to do the RAG Evaluation, and get the LLM Provider ID that you wish to use. [Get LLM Provider ID](https://docs.dataworkz.com/product-docs/api#qna-v1-systems-systemid-llm-providers)
 
 Use the above details to modify the benchmarking to script, to either compare two or more pipelines, or even evaluate a single QNA RAG pipeline. 
 
