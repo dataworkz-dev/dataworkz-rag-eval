@@ -1,17 +1,16 @@
 # README
 
-This is a simple code repository that includes two Python scripts for running benchmarks on different machine learning models. The aim of this project is to provide a comparison between different classification algorithms, specifically Random Forest and XGBoost.
-
+This is a simple code repository that includes two Python scripts for running benchmarks on different RAG pipelines on the Dataworkz platform. We can use the tool to benchmark RAG pipelines by running it against a Golden Truth dataset and comparing the Retrieval strategies. 
 ## Files
 
 1. `benchmark_*.py`: These scripts contain the main function which runs the benchmarking process. It imports necessary functions from other modules, applies them on data, evaluates performance of RAG pipelines, and outputs results in a table format into `benchmark_results` folder.
-2. `dtwz_ai.py`: Contains pipeline eevaluation functions  for evaluating any given pipeline, and `dataworkz_api.py` provides the wrappers around the Dataworz API.
+2. `dtwz_ai.py`: Contains pipeline evaluation functions  for evaluating any given pipeline, and `dataworkz_api.py` provides the wrappers around the Dataworz API.
 3. `requirements.txt`: Contains a list of Python dependencies required for running these scripts.
 4. `data/` directory: Contains the dataset used in this project. The data should be placed here and accessed by providing the relative path to it from benchmarking.py. 
 5. `README.md`: This file you are reading right now. It provides an overview of the repository and its content.
 
 ## How to get API keys and experimentation details 
-1. Use the following link to understand how to get the API keys - [Generate Dataworks API Key](https://docs.dataworkz.com/product-docs/api/generate-api-key-in-dataworkz)
+1. Use the following link to understand how to get the API keys - [Generate Dataworkz API Key](https://docs.dataworkz.com/product-docs/api/generate-api-key-in-dataworkz)
 2. Once the API key is available, use the API key to get the QNA systems configured - [Get QNA systems](https://docs.dataworkz.com/product-docs/api#qna-v1-systems)
 3. Select the QNA system IDs for which you need to do the RAG Evaluation, and get the LLM Provider ID that you wish to use. [Get LLM Provider ID](https://docs.dataworkz.com/product-docs/api#qna-v1-systems-systemid-llm-providers)
 
