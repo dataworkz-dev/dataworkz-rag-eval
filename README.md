@@ -1,6 +1,6 @@
 # README
 
-This is a simple code repository that includes two Python scripts for running benchmarks on different RAG pipelines on the Dataworkz platform. We can use the tool to benchmark RAG pipelines by running it against a Golden Truth dataset and comparing the Retrieval strategies. 
+This is a simple code repository that includes two Python scripts for running benchmarks on various RAG pipelines on the Dataworkz platform. We can use the tool to benchmark RAG pipelines by running it against a Golden Truth dataset and comparing the Retrieval strategies. 
 ## Files
 
 1. `benchmark_*.py`: These scripts contain the main function which runs the benchmarking process. It imports necessary functions from other modules, applies them on data, evaluates performance of RAG pipelines, and outputs results in a table format into `benchmark_results` folder.
@@ -13,9 +13,13 @@ This is a simple code repository that includes two Python scripts for running be
 1. Use the following link to understand how to get the API keys - [Generate Dataworkz API Key](https://docs.dataworkz.com/product-docs/api/generate-api-key-in-dataworkz)
 ### Getting QNA system details 
 Once the API Key is available, use either of the methods below to get the QNA system details - 
+
+#### Method 1: Using Python script
 Run the `get_dtwz_detials.py` and follow the intructions on the screen, making note of the credentails that are needed for further steps. 
 ### OR
-1. Once the API key is available, use the API key to get the QNA systems configured - [Get QNA systems](https://docs.dataworkz.com/product-docs/api#qna-v1-systems)
+#### Method 2: Using Dataworkz API directly
+Follow the steps below - 
+1. Get the QNA systems configured - [Get QNA systems](https://docs.dataworkz.com/product-docs/api#qna-v1-systems)
 2. Select the QNA system IDs for which you need to do the RAG Evaluation, and get the LLM Provider ID that you wish to use. [Get LLM Provider ID](https://docs.dataworkz.com/product-docs/api#qna-v1-systems-systemid-llm-providers)
 
 Use the above details to modify the benchmarking to script, to either compare two or more pipelines, or even evaluate a single QNA RAG pipeline. 
@@ -23,11 +27,13 @@ Use the above details to modify the benchmarking to script, to either compare tw
 ## How to Run
 
 1. Install Python dependencies using pip: 
+   
    ```bash
    pip install -r requirements.txt
    ```
 2. Place your data in the "data/" directory as instructed above. Make sure that the paths in benchamark_*.py correspond to your actual data location. and the data is in the format as specified by the headers, `["question", "gt_answer", "gt-context", "source"]`. The source is used in the benchmarking script to iterate over the alternative pipelines.
 3. Run `benchmark_*.py` script:
+   
     ```bash
     python benchmark_*.py
     ```
@@ -36,4 +42,5 @@ Use the above details to modify the benchmarking to script, to either compare tw
 
 Please note that running these scripts require a working Python environment along with necessary libraries installed (as specified in requirements.txt). Also, the data paths and other configurations are assumed based on the current file structure and might need adjustments depending on your specific setup.
 
-If running on a Mac with MPS enabled for pytorch, please set this variable to avoid any memory issues: ```PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0```
+## Troubleshooting 
+* If running on a Mac with MPS enabled for pytorch, please set this environment variable to avoid any memory issues: ```PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0```
