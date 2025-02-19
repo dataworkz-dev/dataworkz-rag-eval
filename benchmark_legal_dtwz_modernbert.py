@@ -26,37 +26,9 @@ logger.setLevel(logging.DEBUG)
 benchmark_name_to_qna: dict[str, str] = {
     "privacy_qa": [
         {
-            "expt_name": "privacy_qna_rerank",
-            "uuid": "04809ddf-e395-4384-97f2-a80cfb1e2813",
-        },
-        {
-            "expt_name": "privacy_qna_rerank",
-            "uuid": "be0c53c8-33fe-4da9-ad6e-897d2f9c5fc1",
-        },
-    ],
-    "contractnli": [
-        {
-            "expt_name": "contractnli_qna_v1",
-            "uuid": "bafd8ef9-f535-489a-9d37-1940f5a12b10",
-        },
-        {
-            "expt_name": "contractnli_qna_rerank",
-            "uuid": "87c1eb00-fe80-4012-b8b8-82afd3181d12",
-        },
-    ],
-    "maud": [
-        {"expt_name": "maud_qna_v1", "uuid": "04d1b00f-1739-486b-a3eb-a3fcb4c07e2a"},
-        {
-            "expt_name": "maud_qna_rerank",
-            "uuid": "fc0f4993-b461-4b26-b1fb-ce26ce55ef57",
-        },
-    ],
-    "cuad": [
-        {
-            "expt_name": "cuad_qna_rerank",
-            "uuid": "8a7bed94-bb5c-42bf-8244-eaec6cdeaed4",
-        },
-        {"expt_name": "cuad_qna_v2", "uuid": "c8710d96-ec61-43a1-aa40-666f4d579afc"},
+            "expt_name": "privacy_qna_modernbert_rerank",
+            "uuid": "6e65ceb5-a0fd-44c8-861c-fdd0b3a07877",
+        }
     ],
 }
 
@@ -72,44 +44,49 @@ LLM_PROVIDER_ID = "599fc5b5-551b-452e-825b-970d2cfe68fe"
 
 async def main() -> None:
     qa_data = pd.read_csv("./data/legalbench_qa_data.csv")
+    qa_data = qa_data.head(25)
     dtwz_ai_client = AIDtwz(ANSWER_METRICS, ADDITIONAL_METRICS)
     dtwz_ai_client.set_llm_provider_id(LLM_PROVIDER_ID)
     results = []
+    logger.debug(f"number of data points: {len(qa_data)}")
     for row in qa_data.itertuples():
         question = row.question
         gt_answer = row.gt_answer
         source = row.source
-        for system in benchmark_name_to_qna[row.source]:
-            expt_name = system["expt_name"]
-            uuid = system["uuid"]
-            dtwz_ai_client.set_system_id(uuid)
-            debug_str = f"INFO: running {source} experiment: {expt_name} on question:{question}..."
-            logger.debug(debug_str)
-            # get the merge input chunks from DTWZ system response, which is used to score retrieval later on.
-            logger.debug(f"INFO: fetching answer...")
-            merge_input_chunks = dtwz_ai_client.get_chunks(question)
-            if merge_input_chunks is None:
-                logger.error(f"ERROR: could not fetch answer data")
-                exit()
-            # compute metrics on the retrieved answer against ground truth answer.
-            logger.debug(f"INFO: computing metrics...")
-            scores = await dtwz_ai_client.score_retrieval(
-                question, gt_answer, merge_input_chunks
-            )
-            if ANSWER_METRICS:
-                answer_scores = dtwz_ai_client.score_system(question, gt_answer)
-                scores = scores | answer_scores
-            # append the results to a list of dictionaries.
-            results.append(
-                {
-                    "question": question,
-                    "gt_answer": gt_answer,
-                    "system_answer": dtwz_ai_client.get_answer(),
-                    "source": source,
-                    "experiment_name": expt_name,
-                }
-                | scores
-            )
+        debug_str = f"INFO: running {source} on question:{question}..."
+        logger.debug(debug_str)
+        if source == 'privacy_qa':
+            for system in benchmark_name_to_qna[row.source]:
+                expt_name = system["expt_name"]
+                uuid = system["uuid"]
+                dtwz_ai_client.set_system_id(uuid)
+                debug_str = f"INFO: running {source} with experiment: {expt_name} on question:{question}..."
+                logger.debug(debug_str)
+                # get the merge input chunks from DTWZ system response, which is used to score retrieval later on.
+                logger.debug(f"INFO: fetching answer...")
+                merge_input_chunks = dtwz_ai_client.get_chunks(question)
+                if merge_input_chunks is None:
+                    logger.error(f"ERROR: could not fetch answer data")
+                    exit()
+                # compute metrics on the retrieved answer against ground truth answer.
+                logger.debug(f"INFO: computing metrics...")
+                scores = await dtwz_ai_client.score_retrieval(
+                    question, gt_answer, merge_input_chunks
+                )
+                if ANSWER_METRICS:
+                    answer_scores = dtwz_ai_client.score_system(question, gt_answer)
+                    scores = scores | answer_scores
+                # append the results to a list of dictionaries.
+                results.append(
+                    {
+                        "question": question,
+                        "gt_answer": gt_answer,
+                        "system_answer": dtwz_ai_client.get_answer(),
+                        "source": source,
+                        "experiment_name": expt_name,
+                    }
+                    | scores
+                )
         # adding in sleep to throttle the requests to avoid rate limiting by DTWZ AI API
         time.sleep(5)
     qa_results = pd.DataFrame(results)
