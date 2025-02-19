@@ -28,7 +28,18 @@ Follow the steps below -
 1. Get the QNA systems configured - [Get QNA systems](https://docs.dataworkz.com/product-docs/api#qna-v1-systems)
 2. Select the QNA system IDs for which you need to do the RAG Evaluation, and get the LLM Provider ID that you wish to use. [Get LLM Provider ID](https://docs.dataworkz.com/product-docs/api#qna-v1-systems-systemid-llm-providers)
 
-Use the above details to modify the benchmarking to script, to either compare two or more pipelines, or even evaluate a single QNA RAG pipeline. Please refer to the example below
+Use the above details to modify the benchmarking to script, to either compare two or more pipelines, or even evaluate a single QNA RAG pipeline. 
+
+## How to Run
+
+1. Install Python dependencies using pip: 
+   
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Place your data in the "data/" directory as instructed above. Make sure that the paths in benchamark_*.py correspond to your actual data location. and the data is in the format as specified by the headers, `["question", "gt_answer", "gt-context", "source"]`. The source is used in the benchmarking script to iterate over the alternative pipelines.
+   
+3. Please refer to the example below for changes to the benchmarking script
 
 ### example
 ```
@@ -47,21 +58,12 @@ benchmark_name_to_qna: dict[str, str] = {
 
 LLM_PROVIDER_ID = "llm_provider_id_from_previous_step"
 ```
-
-## How to Run
-
-1. Install Python dependencies using pip: 
-   
-   ```bash
-   pip install -r requirements.txt
-   ```
-2. Place your data in the "data/" directory as instructed above. Make sure that the paths in benchamark_*.py correspond to your actual data location. and the data is in the format as specified by the headers, `["question", "gt_answer", "gt-context", "source"]`. The source is used in the benchmarking script to iterate over the alternative pipelines.
-3. Run `benchmark_*.py` script:
+4. Run `benchmark_*.py` script:
    
     ```bash
     python benchmark_*.py
     ```
-4. The results will be stored in the `benchmark_results` folder along with the timestamp of the run. 
+5. The results will be stored in the `benchmark_results` folder along with the timestamp of the run. 
 
 
 Please note that running these scripts require a working Python environment along with necessary libraries installed (as specified in requirements.txt). Also, the data paths and other configurations are assumed based on the current file structure and might need adjustments depending on your specific setup.
