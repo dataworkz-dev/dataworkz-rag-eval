@@ -1,6 +1,10 @@
 # README
 
 This is a simple code repository that includes two Python scripts for running benchmarks on various RAG pipelines on the Dataworkz platform. We can use the tool to benchmark RAG pipelines by running it against a Golden Truth dataset and comparing the Retrieval strategies. 
+
+### Minimum requirements 
+``` python >=3.10. <=3.12 ```
+
 ## Files
 
 1. `benchmark_*.py`: These scripts contain the main function which runs the benchmarking process. It imports necessary functions from other modules, applies them on data, evaluates performance of RAG pipelines, and outputs results in a table format into `benchmark_results` folder.
@@ -15,6 +19,19 @@ Use the following link to understand how to get the API keys - [Generate Datawor
 ### Set Environment Variables 
 1. set DATAWORKZ_API_KEY to the value above
 2. set DATAWORKZ_SERVICE_URL to the url of your dataworkz service. e.g. https://ragapps.dataworkz.com 
+
+In your shell environment, do the following
+``` bash
+export DATAWORKZ_API_KEY=api_key_value
+export DATAWORKZ_SERVICE_URL=https://ragapps.dataworkz.com 
+```
+
+### Create a Conda Environment 
+
+``` bash
+conda create -n dataworkz_rag_eval python=3.12
+conda activate dataworkz_rag_eval
+```
 
 ### Getting QNA system details
 
@@ -68,3 +85,4 @@ Please note that running these scripts require a working Python environment alon
 
 ## Troubleshooting 
 * If running on a Mac with MPS enabled for pytorch, please set this environment variable to avoid any memory issues: ```PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0```
+* Turning on ``` ADDITIONAL_METRICS = True ```, for BERT metrics will need a huggingface API key as it uses the BERT model for execution

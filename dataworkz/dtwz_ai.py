@@ -13,6 +13,9 @@ from continuous_eval.metrics.generation.text import (
     BertAnswerSimilarity,
     BertAnswerRelevance,
 )
+from continuous_eval.metrics.generation.text.semantic import (
+    DebertaAnswerScores
+)
 
 # TODO: Add support for other providers of LLMs, like groq
 import logging

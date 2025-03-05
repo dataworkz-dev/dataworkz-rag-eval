@@ -37,7 +37,7 @@ benchmark_name_to_qna: dict[str, str] = {
 }
 
 # enable answer based deterministic metrics
-ANSWER_METRICS = True
+ANSWER_METRICS = False
 # disable BERT metrics because hugging face takes too long for responses
 # also disable additional metrics like Rouge and Bleu
 ADDITIONAL_METRICS = False
