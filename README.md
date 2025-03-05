@@ -10,9 +10,15 @@ This is a simple code repository that includes two Python scripts for running be
 5. `README.md`: This file you are reading right now. It provides an overview of the repository and its content.
 
 ## How to get API keys and experimentation details 
-1. Use the following link to understand how to get the API keys - [Generate Dataworkz API Key](https://docs.dataworkz.com/product-docs/api/generate-api-key-in-dataworkz)
-### Getting QNA system details 
-Once the API Key is available, use either of the methods below to get the QNA system details - 
+Use the following link to understand how to get the API keys - [Generate Dataworkz API Key](https://docs.dataworkz.com/product-docs/api/generate-api-key-in-dataworkz)
+   
+### Set Environment Variables 
+1. set DATAWORKZ_API_KEY to the value above
+2. set DATAWORKZ_SERVICE_URL to the url of your dataworkz service. e.g. https://ragapps.dataworkz.com 
+
+### Getting QNA system details
+
+Once the API Key and Service URL are available, use either of the methods below to get the QNA system details - 
 
 #### Method 1: Using Python script
 Run the `get_dtwz_detials.py` and follow the intructions on the screen, making note of the credentails that are needed for further steps. 
@@ -22,7 +28,25 @@ Follow the steps below -
 1. Get the QNA systems configured - [Get QNA systems](https://docs.dataworkz.com/product-docs/api#qna-v1-systems)
 2. Select the QNA system IDs for which you need to do the RAG Evaluation, and get the LLM Provider ID that you wish to use. [Get LLM Provider ID](https://docs.dataworkz.com/product-docs/api#qna-v1-systems-systemid-llm-providers)
 
-Use the above details to modify the benchmarking to script, to either compare two or more pipelines, or even evaluate a single QNA RAG pipeline. 
+Use the above details to modify the benchmarking to script, to either compare two or more pipelines, or even evaluate a single QNA RAG pipeline. Please refer to the example below
+
+### example
+```
+benchmark_name_to_qna: dict[str, str] = {
+    "name_of_the_source_column_in_qa_data_file": [
+        {
+            "expt_name": "experiment_name_1",
+            "uuid": "uuid_of_experiment_from_previous_step",
+        },
+        {
+            "expt_name": "experiment_name_2",
+            "uuid": "uuid_of_experiment_from_previous_step",
+        },
+    ]
+}
+
+LLM_PROVIDER_ID = "llm_provider_id_from_previous_step"
+```
 
 ## How to Run
 

@@ -72,7 +72,6 @@ LLM_PROVIDER_ID = "599fc5b5-551b-452e-825b-970d2cfe68fe"
 
 async def main() -> None:
     qa_data = pd.read_csv("./data/legalbench_qa_data.csv")
-    qa_data = qa_data.head(1)
     dtwz_ai_client = AIDtwz(ANSWER_METRICS, ADDITIONAL_METRICS)
     dtwz_ai_client.set_llm_provider_id(LLM_PROVIDER_ID)
     results = []
