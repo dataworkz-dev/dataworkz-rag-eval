@@ -1,5 +1,4 @@
 import time
-import os
 from .dataworkz_api import DataworkzAPI
 from continuous_eval.metrics.retrieval import (
     PrecisionRecallF1,
@@ -9,7 +8,6 @@ from continuous_eval.metrics.retrieval import (
 from continuous_eval.metrics.generation.text import (
     DeterministicAnswerCorrectness,
     DeterministicFaithfulness,
-    DebertaAnswerScores,
     BertAnswerSimilarity,
     BertAnswerRelevance,
 )
