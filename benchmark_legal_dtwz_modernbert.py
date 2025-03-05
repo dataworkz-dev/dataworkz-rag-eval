@@ -30,6 +30,24 @@ benchmark_name_to_qna: dict[str, str] = {
             "uuid": "6e65ceb5-a0fd-44c8-861c-fdd0b3a07877",
         }
     ],
+    "contractnli": [
+        {
+            "expt_name": "contractnli_qna_modernbert_rerank",
+            "uuid": "689c2fc0-9a2b-4884-971d-3650e8420cbf",
+        },
+    ],
+    "maud": [
+        {
+            "expt_name": "maud_qna_modernbert_rerank",
+            "uuid": "4f05e296-3833-4144-9bfb-a8234d55fa10",
+        },
+    ],
+    "cuad": [
+        {
+            "expt_name": "cuad_qna_modernbert_rrank",
+            "uuid": "59bd43c1-34cb-414f-bf63-e3f4012e8053",
+        },
+    ],
 }
 
 # enable answer based deterministic metrics
@@ -44,49 +62,44 @@ LLM_PROVIDER_ID = "599fc5b5-551b-452e-825b-970d2cfe68fe"
 
 async def main() -> None:
     qa_data = pd.read_csv("./data/legalbench_qa_data.csv")
-    qa_data = qa_data.head(25)
     dtwz_ai_client = AIDtwz(ANSWER_METRICS, ADDITIONAL_METRICS)
     dtwz_ai_client.set_llm_provider_id(LLM_PROVIDER_ID)
     results = []
-    logger.debug(f"number of data points: {len(qa_data)}")
     for row in qa_data.itertuples():
         question = row.question
         gt_answer = row.gt_answer
         source = row.source
-        debug_str = f"INFO: running {source} on question:{question}..."
-        logger.debug(debug_str)
-        if source == 'privacy_qa':
-            for system in benchmark_name_to_qna[row.source]:
-                expt_name = system["expt_name"]
-                uuid = system["uuid"]
-                dtwz_ai_client.set_system_id(uuid)
-                debug_str = f"INFO: running {source} with experiment: {expt_name} on question:{question}..."
-                logger.debug(debug_str)
-                # get the merge input chunks from DTWZ system response, which is used to score retrieval later on.
-                logger.debug(f"INFO: fetching answer...")
-                merge_input_chunks = dtwz_ai_client.get_chunks(question)
-                if merge_input_chunks is None:
-                    logger.error(f"ERROR: could not fetch answer data")
-                    exit()
-                # compute metrics on the retrieved answer against ground truth answer.
-                logger.debug(f"INFO: computing metrics...")
-                scores = await dtwz_ai_client.score_retrieval(
-                    question, gt_answer, merge_input_chunks
-                )
-                if ANSWER_METRICS:
-                    answer_scores = dtwz_ai_client.score_system(question, gt_answer)
-                    scores = scores | answer_scores
-                # append the results to a list of dictionaries.
-                results.append(
-                    {
-                        "question": question,
-                        "gt_answer": gt_answer,
-                        "system_answer": dtwz_ai_client.get_answer(),
-                        "source": source,
-                        "experiment_name": expt_name,
-                    }
-                    | scores
-                )
+        for system in benchmark_name_to_qna[row.source]:
+            expt_name = system["expt_name"]
+            uuid = system["uuid"]
+            dtwz_ai_client.set_system_id(uuid)
+            debug_str = f"INFO: running {source} with experiment: {expt_name} on question:{question}..."
+            logger.debug(debug_str)
+            # get the merge input chunks from DTWZ system response, which is used to score retrieval later on.
+            logger.debug(f"INFO: fetching answer...")
+            merge_input_chunks = dtwz_ai_client.get_chunks(question)
+            if merge_input_chunks is None:
+                logger.error(f"ERROR: could not fetch answer data")
+                exit()
+            # compute metrics on the retrieved answer against ground truth answer.
+            logger.debug(f"INFO: computing metrics...")
+            scores = await dtwz_ai_client.score_retrieval(
+                question, gt_answer, merge_input_chunks
+            )
+            if ANSWER_METRICS:
+                answer_scores = dtwz_ai_client.score_system(question, gt_answer)
+                scores = scores | answer_scores
+            # append the results to a list of dictionaries.
+            results.append(
+                {
+                    "question": question,
+                    "gt_answer": gt_answer,
+                    "system_answer": dtwz_ai_client.get_answer(),
+                    "source": source,
+                    "experiment_name": expt_name,
+                }
+                | scores
+            )
         # adding in sleep to throttle the requests to avoid rate limiting by DTWZ AI API
         time.sleep(5)
     qa_results = pd.DataFrame(results)
