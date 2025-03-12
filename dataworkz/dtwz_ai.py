@@ -8,11 +8,11 @@ from continuous_eval.metrics.retrieval import (
 from continuous_eval.metrics.generation.text import (
     DeterministicAnswerCorrectness,
     DeterministicFaithfulness,
-    BertAnswerSimilarity,
-    BertAnswerRelevance,
 )
 from continuous_eval.metrics.generation.text.semantic import (
-    DebertaAnswerScores
+    DebertaAnswerScores,
+    BertAnswerSimilarity,
+    BertAnswerRelevance,
 )
 
 # TODO: Add support for other providers of LLMs, like groq
