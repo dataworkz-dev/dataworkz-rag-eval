@@ -3,3 +3,5 @@ numpy==2.2.2
 openai==1.60.2
 pandas==2.2.3
 Requests==2.32.3
+torch===2.6.0
+sentence-transformers==3.4.1
